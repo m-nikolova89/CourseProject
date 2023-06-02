@@ -3,7 +3,6 @@ package pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -68,7 +67,7 @@ public class LoginPage extends BasePage {
         passwordInput.sendKeys(password);
 
         // Wait for reCAPTCHA iframe and switch to it
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(700));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(frameToBeAvailableAndSwitchToIt(By.cssSelector("iframe[src^='https://www.google.com/recaptcha/api2/anchor']")));
 
         // Execute the JavaScript code
@@ -88,13 +87,28 @@ public class LoginPage extends BasePage {
                 "};\n" +
                 "recaptchaCallback();";
 
+        String script2 = "(function(){var w=window,C='___grecaptcha_cfg'" +
+                ",cfg=w[C]=w[C]||{},N='grecaptcha';var gr=w[N]=w[N]||{};" +
+                "gr.ready=gr.ready||function(f){(cfg['fns']=cfg['fns']||[]).push(f);" +
+                "};w['__recaptcha_api']='https://www.google.com/recaptcha/api2/';" +
+                "(cfg['render']=cfg['render']||[]).push('explicit');" +
+                "(cfg['onload']=cfg['onload']||[]).push('onloadCallback');" +
+                "w['__google_recaptcha_client']=true;var d=document,po=d.createElement('script');" +
+                "po.type='text/javascript';po.async=true;" +
+                "po.src='https://www.gstatic.com/recaptcha/releases/CDFvp7CXAHw7k3HxO47Gm1O9/recaptcha__bg.js';" +
+                "po.crossOrigin='anonymous';po.integrity='sha384-z9N8cuZT+YsJSSTMiXye2mipHco/IMMog0l6FWphYPW4IFJPCQw3r5ohVHsmX+ZH';" +
+                "var e=d.querySelector('script[nonce]'),n=e&&(e['nonce']||e.getAttribute('nonce'));" +
+                "if(n){po.setAttribute('nonce',n);}var s=d.getElementsByTagName('script')[0];s.parentNode.insertBefore(po, s);})()";
+
         // Execute the JavaScript code to click on the reCAPTCHA checkbox
         ((JavascriptExecutor) driver).executeScript("document.querySelector('.recaptcha-checkbox-border').click();");
+
+        ((JavascriptExecutor) driver).executeScript(script2);
 
         driver.switchTo().defaultContent();
 
         // Wait for the login button to be visible
-        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(20));
+        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait2.until(ExpectedConditions.visibilityOf(loginButton));
         loginButton.click();
 

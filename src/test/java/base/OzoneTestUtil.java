@@ -36,7 +36,10 @@ public class OzoneTestUtil {
 
         readConfig("src/test/resources/config.properties");
         setupWebDriver();
+
+        //driver.manage().window().maximize() is for running the tests in full screen mode
         driver.manage().window().maximize();
+
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
         driver.get(appURL);
 

@@ -3,18 +3,19 @@ package base;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,9 @@ public class OzoneTestUtil {
 
     @AfterMethod
     public void tearDown() {
+
         driver.quit();
+
     }
 
     @BeforeMethod
@@ -41,9 +44,12 @@ public class OzoneTestUtil {
         driver.manage().window().maximize();
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
-        driver.get(appURL);
 
+        driver.get(appURL);
     }
+
+
+
     @DataProvider(name = "UserCredentials")
     public Object[][] readUserFromCsv() throws IOException, CsvValidationException {
         // Read the CSV file
@@ -62,6 +68,7 @@ public class OzoneTestUtil {
 
         return testData;
     }
+
 
     private List<String[]> readCSV(String filePath) throws IOException, CsvValidationException {
         List<String[]> data = new ArrayList<>();
@@ -105,10 +112,8 @@ public class OzoneTestUtil {
     }
 
     private WebDriver setupChromeDriver() {
-
         WebDriverManager.chromedriver().setup();
         return new ChromeDriver();
-
     }
 
     private WebDriver setupFirefoxDriver() {
@@ -117,4 +122,6 @@ public class OzoneTestUtil {
     }
 
 }
+
+
 

@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parallel Test Suite" parallel="tests">
+    <test name="Test 1">
+        <classes>
+            <class name="testPOM.UnsuccessfulLoginTest"/>
+        </classes>
+    </test>
+    <test name="Test 2">
+        <classes>
+            <class name="testPOM.SearchPageTest"/>
+        </classes>
+    </test>
+</suite>
